@@ -1,0 +1,1 @@
+# app setting file check and load
