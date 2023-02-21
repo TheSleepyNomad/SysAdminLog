@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE
 from shutil import disk_usage
 from app.config.config import GB
+from datetime import datetime, time
 
 def check_disk_free_space():
     # send command in cmd
@@ -21,7 +22,14 @@ def check_os_start_time():
         a = proc.stdout.readlines()
     
     for _ in a:
-        s = _.decode('UTF-8').strip()
-        if s.startswith('System Boot Time') or s.startswith('Время загрузки системы'):
-            print(s)
+        cmd_result = _.decode('UTF-8').strip()
+        if cmd_result.startswith('System Boot Time') or cmd_result.startswith('Время загрузки системы'):
+            _sep_str = cmd_result[17:-2].strip().split(' ')
+            date_str = f'{_sep_str[0][:-1]} {_sep_str[1]}'
+            date_from_cmd = datetime.strptime(date_str, '%m/%d/%Y %H:%M:%S')
+            current_date = datetime.now()
+            if date_from_cmd.date() == current_date.date() and date_from_cmd.time() < current_date.time():
+                print('Все хорошо!')
+            else:
+                print(f'Последний раз компьютер перезагружался {date_from_cmd.date()}')
 

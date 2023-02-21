@@ -1,5 +1,5 @@
 from subprocess import Popen, PIPE
-from app.module.system import check_disk_free_space
+from app.module.system import check_disk_free_space, check_os_start_time
 # main tasks
 # check disk free space
 # check os start time
@@ -16,4 +16,5 @@ def check_sql_backup_exist():
     pass
 
 if __name__ == '__main__':
-    check_disk_free_space()
+    # check_disk_free_space()
+    check_os_start_time()
