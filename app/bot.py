@@ -1,5 +1,4 @@
-from aiogram import Bot, Dispatcher, executor
-from aiogram.utils.exceptions import NetworkError
+from aiogram import Bot, Dispatcher 
 from app.config.env import BOT_TOKEN
 from app.handlers.main_handler import register_all_handlers
 from app.config.config import LOG_DIR
@@ -20,10 +19,7 @@ def __on_start_up(dp: Dispatcher):
     register_all_handlers(dp)
     
 
-def start_app():
-    try:
-        bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
-        dp = Dispatcher(bot)
-        executor.start_polling(dp, skip_updates=True, on_startup=__on_start_up(dp))
-    except NetworkError:
-        logger.error('Ошибка сети! Не удалось подключиться к серверу Telegram')
+async def start_app():
+    bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
+    dp = Dispatcher()
+    await dp.start_polling(bot, skip_updates=True, on_startup=__on_start_up(dp))
